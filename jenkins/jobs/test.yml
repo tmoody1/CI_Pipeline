@@ -6,6 +6,6 @@
     pipeline-scm:
       scm:
         - git:
-            url: git@github.com:tmoody1/CI_Pipeline.git
+            url: https://github.com/tmoody1/CI_Pipeline.git
             clean: true
       script-path: jenkins/jobs/test.groovy
