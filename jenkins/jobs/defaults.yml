@@ -1,0 +1,15 @@
+- defaults:
+    name: global
+    description: 'Do not edit this job through the web!'
+    disabled: false
+    concurrent: true
+    quiet-period: 5
+    block-downstream: false
+    block-upstream: false
+    retry-count: 3
+    node: slave
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 10
+      artifactDaysToKeep: 1
+      artifactNumToKeep: 1

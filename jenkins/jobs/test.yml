@@ -1,0 +1,11 @@
+- job:
+    name: test-job
+    project-type: pipeline
+    sandbox: true
+    defaults: global
+    pipeline-scm:
+      scm:
+        - git:
+            url: git@github.com:tmoody1/CI_Pipeline.git
+            clean: true
+      script-path: jenkins/jobs/test.groovy
