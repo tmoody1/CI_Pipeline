@@ -7,11 +7,7 @@ services:
       - 8080:8080
       - 50000:50000
     volumes:
-      - type: "volume"
-        source: jenkins_home
-        target: /var/jenkins_home
-        volume:
-          nocopy: true
+      - "jenkins_home:/var/jenkins_home"
     environment:
       JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
     env_file:
