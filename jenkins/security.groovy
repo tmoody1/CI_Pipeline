@@ -7,12 +7,14 @@ import jenkins.security.s2m.AdminWhitelistRule
 def instance = Jenkins.getInstance()
 //def env = System.getenv()
 File infile = new File("/tmp/secrets.txt")
-String user = readLine( infile, 1 ).split('=')[1]
-String pass = readLine( infile, 2 ).split('=')[1]
-
+String user = infile.grep(~/^user.*/)
+user = user.tokenize('=')[1]
+String pass = infile.grep(~/^password.*/)
+pass = pass.tokenize('=')[1]
 //def user = env['user']
 //def pass = env['password']
-
+print("The user is"+ user)
+print("the password is"+ pass)
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
 hudsonRealm.createAccount(user, pass)
 instance.setSecurityRealm(hudsonRealm)
