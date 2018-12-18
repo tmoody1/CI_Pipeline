@@ -1,5 +1,5 @@
 - job:
-    name: test-job
+    name: ci-pipeline
     project-type: pipeline
     sandbox: true
     defaults: global
@@ -8,4 +8,4 @@
         - git:
             url: https://github.com/tmoody1/CI_Pipeline.git
             clean: true
-      script-path: jenkins/jobs/test.groovy
+      script-path: jenkins/jobs/ci-pipeline.groovy

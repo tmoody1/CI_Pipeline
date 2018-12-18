@@ -10,7 +10,13 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/* && \
     pip install jenkins-job-builder && \
     chown jenkins: /tmp/secrets.txt && \
-    chmod 400  /tmp/secrets.txt
+    chmod 400  /tmp/secrets.txt && \
+    curl -o /tmp/docker.tar.gz https://download.docker.com/linux/static/stable/x86_64/docker-18.09.0.tgz && \
+    tar -C /tmp -xzf /tmp/docker.tar.gz && \
+    mv /tmp/docker/* /usr/bin && \
+    groupadd docker && \
+    usermod -aG docker jenkins && \
+    echo ran
 
 USER jenkins
 ## Install plugins
@@ -25,9 +31,4 @@ COPY --chown=jenkins:jenkins jobs /var/jenkins_home/job-definitions
 RUN mkdir -p ~/.config/jenkins_jobs/
 COPY --chown=jenkins:jenkins jenkins_jobs.ini /var/jenkins_home/.config/jenkins_jobs/ 
 RUN chmod 640 /var/jenkins_home/.config/jenkins_jobs/jenkins_jobs.ini
-#    cat /tmp/secrets.txt >> /var/jenkins_home/.config/jenkins_jobs/jenkins_jobs.ini && \
-#    cat /var/jenkins_home/.config/jenkins_jobs/jenkins_jobs.ini
 COPY --chown=jenkins:jenkins z10job-config.groovy /usr/share/jenkins/ref/init.groovy.d/
-#COPY --chown=jenkins:jenkins config.xml /var/jenkins_home/config.xml
-#COPY --chown=jenkins:jenkins update /var/jenkins_home/jobs/update
-#CMD jenkins-jobs update ~/job-definitions
