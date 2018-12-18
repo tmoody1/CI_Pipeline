@@ -18,7 +18,7 @@ COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
 ## Setup admin user
-COPY --chown=jenkins:jenkins 00security.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY --chown=jenkins:jenkins z00security.groovy /usr/share/jenkins/ref/init.groovy.d/
 COPY --chown=jenkins:jenkins jobs /var/jenkins_home/job-definitions
 
 ## Setup jobs
@@ -27,5 +27,7 @@ COPY --chown=jenkins:jenkins jenkins_jobs.ini /var/jenkins_home/.config/jenkins_
 RUN chmod 640 /var/jenkins_home/.config/jenkins_jobs/jenkins_jobs.ini
 #    cat /tmp/secrets.txt >> /var/jenkins_home/.config/jenkins_jobs/jenkins_jobs.ini && \
 #    cat /var/jenkins_home/.config/jenkins_jobs/jenkins_jobs.ini
-COPY --chown=jenkins:jenkins 10job-config.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY --chown=jenkins:jenkins z10job-config.groovy /usr/share/jenkins/ref/init.groovy.d/
+#COPY --chown=jenkins:jenkins config.xml /var/jenkins_home/config.xml
+#COPY --chown=jenkins:jenkins update /var/jenkins_home/jobs/update
 #CMD jenkins-jobs update ~/job-definitions

@@ -19,3 +19,16 @@ instance.setAuthorizationStrategy(strategy)
 instance.save()
 
 Jenkins.instance.getInjector().getInstance(AdminWhitelistRule.class).setMasterKillSwitch(false)
+
+
+jenkins = Jenkins.instance;
+
+jobName = "Initalize";
+
+dslProject = new hudson.model.FreeStyleProject(jenkins, jobName);
+jenkins.add(dslProject, jobName);
+job = jenkins.getItem(jobName)
+builders = job.getBuildersList()
+
+hudson.tasks.Shell newShell = new hudson.tasks.Shell("jenkins-jobs update ~/job-definitions")
+builders.replace(newShell)
