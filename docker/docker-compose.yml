@@ -1,0 +1,32 @@
+version: '3.2'
+
+services:
+  sonarqube:
+    image: sonarqube
+    ports:
+      - 9000:9000
+    volumes:
+      - "sonar_home:/opt/sonarqube"
+    networks:
+      - docker
+  jenkins:
+    image: jenkins-ci
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - "jenkins_home:/var/jenkins_home"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+    env_file:
+      ./jenkins/secrets.txt
+    networks:
+      - docker
+
+
+volumes:
+  sonar_home:
+  jenkins_home:
+networks:
+  docker:

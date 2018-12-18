@@ -20,15 +20,17 @@ RUN apt-get update -y && \
 
 USER jenkins
 ## Install plugins
-COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+COPY config/plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt && \
+    mkdir ~/.m2
+    
+COPY --chown=jenkins:jenkins config/settings.xml
 
-## Setup admin user
-COPY --chown=jenkins:jenkins z00security.groovy /usr/share/jenkins/ref/init.groovy.d/
-COPY --chown=jenkins:jenkins jobs /var/jenkins_home/job-definitions
+## Setup admin user and 1st job
+COPY --chown=jenkins:jenkins config/init.d/z00security.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY --chown=jenkins:jenkins config/init.d/z10job-config.groovy /usr/share/jenkins/ref/init.groovy.d/
 
 ## Setup jobs
 RUN mkdir -p ~/.config/jenkins_jobs/
-COPY --chown=jenkins:jenkins jenkins_jobs.ini /var/jenkins_home/.config/jenkins_jobs/ 
-RUN chmod 640 /var/jenkins_home/.config/jenkins_jobs/jenkins_jobs.ini
-COPY --chown=jenkins:jenkins z10job-config.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY --chown=jenkins:jenkins config/jenkins_jobs.ini /var/jenkins_home/.config/jenkins_jobs/ 
+COPY --chown=jenkins:jenkins jobs /var/jenkins_home/job-definitions

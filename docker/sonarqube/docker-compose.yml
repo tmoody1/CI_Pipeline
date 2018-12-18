@@ -7,6 +7,10 @@ services:
       - 9000:9000
     volumes:
       - "sonar_home:/opt/sonarqube"
+    networks:
+      - docker
 
 volumes:
   sonar_home:
+networks:
+  docker:

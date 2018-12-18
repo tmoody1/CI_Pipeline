@@ -5,6 +5,9 @@ node('master'){
     stage('build project'){
         sh 'mvn clean package docker:build'
     }
+    stage('scan project'){
+        sh 'mvn sonar:sonar'
+    }
     stage('run project'){
         sh 'docker run --name trainer-mysql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=trainer -e MYSQL_USER=trainer_user -e MYSQL_PASSWORD=trainer_pass -d mysql:5.6'
         sleep(30)
