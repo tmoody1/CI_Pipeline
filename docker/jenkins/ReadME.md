@@ -4,10 +4,6 @@ Note any user on the jenkins docker container has access to this file, can map a
 The secrets.txt file must contain
 user=<jenkins user>
 password=<jenkins pass>
-MYSQL_ROOT_PASSWORD=<mysql pass (for app needs to be password)>
-MYSQL_DATABASE=trainer
-MYSQL_USER=trainer_user
-MYSQL_PASSWORD=<password needs to be trainer_pass for app>
 
 
 # This is where we install and configure jenkins.

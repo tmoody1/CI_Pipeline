@@ -24,7 +24,7 @@ COPY config/plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt && \
     mkdir ~/.m2
     
-COPY --chown=jenkins:jenkins config/settings.xml
+COPY --chown=jenkins:jenkins config/settings.xml /var/jenkins_home/.m2/
 
 ## Setup admin user and 1st job
 COPY --chown=jenkins:jenkins config/init.d/z00security.groovy /usr/share/jenkins/ref/init.groovy.d/

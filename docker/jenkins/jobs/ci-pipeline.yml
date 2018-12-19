@@ -8,4 +8,4 @@
         - git:
             url: https://github.com/tmoody1/CI_Pipeline.git
             clean: true
-      script-path: jenkins/jobs/ci-pipeline.groovy
+      script-path: docker/jenkins/jobs/ci-pipeline.groovy
