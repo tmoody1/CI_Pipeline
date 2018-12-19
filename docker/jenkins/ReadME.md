@@ -2,8 +2,12 @@
 The security.groovy will run based on the env variables in secrets.txt, there are more secure ways of generating this file but as this is a demo I have left it here
 Note any user on the jenkins docker container has access to this file, can map a file to jenkins for additional security or pass secrets using swarm secrets or ansible..
 The secrets.txt file must contain
-user=<user>
-password=<password>
+user=<jenkins user>
+password=<jenkins pass>
+MYSQL_ROOT_PASSWORD=<mysql pass (for app needs to be password)>
+MYSQL_DATABASE=trainer
+MYSQL_USER=trainer_user
+MYSQL_PASSWORD=<password needs to be trainer_pass for app>
 
 
 # This is where we install and configure jenkins.
