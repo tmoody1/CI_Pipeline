@@ -3,16 +3,19 @@ version: '3.2'
 services:
   mysql:
     image: mysql:5.6
-    container_name: trainer-app
+    container_name: trainer-mysql
     networks:
       - app
     env_file:
       ./secrets.txt
   tracker:
     image: trainer/trainer-tracker
+    container_name: trainer-app
     ports:
       - 9090:8080
     networks:
       - app
+    restart: on-failure
+
 networks:
   app:

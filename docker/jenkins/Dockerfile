@@ -18,6 +18,9 @@ RUN apt-get update -y && \
     usermod -aG docker jenkins && \
     echo ran
 
+## Need compose binary for jenkins jobs, ideally we would pull from git but I couldn't find it
+COPY /usr/bin/docker-compose /usr/bin/docker-compose
+
 USER jenkins
 ## Install plugins
 COPY config/plugins.txt /usr/share/jenkins/ref/plugins.txt
