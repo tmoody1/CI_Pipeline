@@ -7,6 +7,7 @@ COPY secrets.txt /tmp
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y maven python-pip && \
+    apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
     pip install jenkins-job-builder
 
@@ -29,10 +30,15 @@ COPY --chown=jenkins:jenkins config/init.d/z10job-config.groovy /usr/share/jenki
 USER jenkins
 ## Install plugins
 COPY config/plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt && \
-    mkdir ~/.m2
-    
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt 
+#This was suddenly not needed, can't work out why
+#&& \
+#    mkdir ~/.m2
+
 ## Setup jobs
 RUN mkdir -p ~/.config/jenkins_jobs/
 COPY --chown=jenkins:jenkins config/jenkins_jobs.ini /var/jenkins_home/.config/jenkins_jobs/ 
 COPY --chown=jenkins:jenkins jobs /var/jenkins_home/job-definitions
+
+COPY --chown=jenkins:jenkins startup.sh /var/jenkins_home/
+RUN chmod 750 /var/jenkins_home/startup.sh

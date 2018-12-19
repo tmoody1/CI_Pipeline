@@ -17,7 +17,8 @@ instance.setSecurityRealm(hudsonRealm)
 def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
 instance.setAuthorizationStrategy(strategy)
 instance.save()
-
+// Completely unnecessary but can't bear to lose it
+/*
 Jenkins.instance.getInjector().getInstance(AdminWhitelistRule.class).setMasterKillSwitch(false)
 
 
@@ -32,3 +33,4 @@ builders = job.getBuildersList()
 
 hudson.tasks.Shell newShell = new hudson.tasks.Shell("jenkins-jobs update ~/job-definitions")
 builders.replace(newShell)
+*/
