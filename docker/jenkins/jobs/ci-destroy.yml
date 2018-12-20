@@ -1,0 +1,11 @@
+- job:
+    name: ci-destroy
+    project-type: pipeline
+    sandbox: true
+    defaults: global
+    pipeline-scm:
+      scm:
+        - git:
+            url: https://github.com/tmoody1/CI_Pipeline.git
+            clean: true
+      script-path: docker/jenkins/jobs/ci-destroy.groovy
