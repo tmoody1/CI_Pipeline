@@ -3,7 +3,7 @@ node('master'){
         git 'https://github.com/tmoody1/CI_Pipeline.git'
     }
     stage('update jobs'){
-        dir('jenkins/jobs'){
+        dir('docker/jenkins/jobs'){
             sh 'jenkins-jobs update .'
         }
     }
