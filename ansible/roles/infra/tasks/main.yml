@@ -1,0 +1,27 @@
+---
+
+- include_tasks: networks.yml
+  when: state == "present"
+  vars:
+    container_state: started
+- include_tasks: volumes.yml
+  when: state == "present"
+  vars:
+    container_state: started
+- include_tasks: containers.yml
+  when: state == "present"
+  vars:
+    container_state: started
+
+- include_tasks: containers.yml
+  when: state == "absent"
+  vars:
+    container_state: absent
+- include_tasks: volumes.yml
+  when: state == "absent"
+  vars:
+    container_state: absent
+- include_tasks: networks.yml
+  when: state == "absent"
+  vars:
+    container_state: absent

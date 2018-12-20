@@ -1,0 +1,40 @@
+---
+
+- name: add env file
+  copy:
+    src: secrets.txt
+    dest: /tmp/secrets.txt
+    owner: root
+    group: root
+    mode: 0600
+
+- name: jenkins
+  docker_container:
+    name: jenkins-ci
+    image: jenkins-ci
+    published_ports:
+      - 8080:8080
+      - 50000:50000
+    volumes: 
+      - "jenkins_home:/var/jenkins_home"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    env:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+    env_file: /tmp/secrets.txt
+    networks:
+      - name: infra
+    state: "{{ container_state }}"
+    keep_volumes: no  # is ignored, leaving as would be better if this worked
+
+- name: sonarqube
+  docker_container:
+    name: sonarqube
+    image: sonarqube
+    published_ports:
+      - 9000:9000
+    volumes: 
+      - "sonar_home:/opt/sonarqube"
+    networks:
+      - name: infra
+    state: "{{ container_state }}"
+    keep_volumes: no

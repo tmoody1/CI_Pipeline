@@ -34,7 +34,14 @@ docker-compose up -d
 ```  
 Browse to jenkins, log in  
 Run the ci-pipeline job  
-  
+
+# Usage Ansible deploy
+Set up ssh to localhost
+```
+ssh-keygen -t rsa -b 4096
+cat ~/.ssh/id_rsa.pub >> .ssh/authorized_keys
+chmod 600 !$
+```
 # Docker  
 This is aimed at people who have limited exposure to docker, it aims to explain the concept behind some of the docker ideas.    
 If you have no experience of docker I reccomend https://docs.docker.com/get-started/#recap-and-cheat-sheet    

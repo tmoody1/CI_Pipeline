@@ -1,0 +1,6 @@
+---
+
+- name: configure network
+  docker_network:
+    name: infra
+    state: "{{ state }}"

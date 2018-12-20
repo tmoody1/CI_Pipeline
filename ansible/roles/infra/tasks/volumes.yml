@@ -1,0 +1,9 @@
+---
+
+- name: manage volumes 
+  docker_volume:
+    name: "{{item}}"
+    state: "{{state}}"
+  with_items:
+    - jenkins_home
+    - sonar_home
