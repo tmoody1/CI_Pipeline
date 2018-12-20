@@ -26,7 +26,8 @@ Create the secrets file by running the following from the root of the repo.
 Replace value with the user/password you want to use  
 ```  
 echo "user=value" >> docker/jenkins/secrets.txt  
-echo "password=value" >> docker/jenkins/secrets.txt  
+echo "password=value" >> docker/jenkins/secrets.txt
+cp docker/jenkins/secrets.txt roles/infra/files/secrets.txt
 cd docker/jenkins  
 docker build -t jenkins-ci  
 cd ../  
@@ -34,13 +35,23 @@ docker-compose up -d
 ```  
 Browse to jenkins, log in  
 Run the ci-pipeline job  
-
+to destroy run
+```
+docker-compose down -v
+```
 # Usage Ansible deploy
 Set up ssh to localhost
+Take the secrets.txt file from the previous example
 ```
 ssh-keygen -t rsa -b 4096
 cat ~/.ssh/id_rsa.pub >> .ssh/authorized_keys
 chmod 600 !$
+cd ansible
+ansible-playbook "/home/tmoody/project/CI_Pipeline/ansible/infra.yml" -i ansible/inv/hosts.ini
+```
+to destroy run
+```
+ansible-playbook "/home/tmoody/project/CI_Pipeline/ansible/infra.yml" -i ansible/inv/hosts.ini --extra-vars "state=absent"
 ```
 # Docker  
 This is aimed at people who have limited exposure to docker, it aims to explain the concept behind some of the docker ideas.    
@@ -218,7 +229,47 @@ However as in this case we don't control the app I have just told docker to rest
   
   
 # Ansible  
-  
+Ansible is used for remote execution, it can be used for configuration management but it can also provision or even just run ad hoc commands to a list of servers. It runs over ssh so in order to connect/use it all you need is ansible installed on the master server and an ssh key on the slave. Ansible is written in python but to write playbooks you only need yaml.
+
+Ansible has probably got the best documentation of any product I've used to find how to use a role I normally just type ansible ```module``` and click the link. Every module has a table of all availiable arguments, defaults and a required in red if they are needed.
+If you don't know the name of the module I would try the linux command that you would use. You will usually find stackoverflow has a link to the actual module.
+
+Ansible does not support using docker compose to create app stacks however the syntax is very similar. I have included both examples here to see how they compare. 
+
+variables in ansible are referenced using jinja 2 templatine (```"{{ var }}"```)
+
+An ansible playbook should take the directory structure below. Ansible will then look for a main.yml file in each directory, and any file main.yml references. Lots of articles will place variables in vars not defaults. This is poor practice as it makes it very hard to reuse the role, vars are much harder to override than defaults in ansible. For full details see [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable)
+
+```
+├── groups
+│   ├── all
+│   │   └── main.yml
+│   └── group1
+│       └── main.yml
+├── inv
+│   └── hosts.ini
+├── playbook.yml
+└── roles
+    ├── role1
+    │   ├── defaults
+    │   │   └── main.yml
+    │   └── tasks
+    │       └── main.yml
+    └── role2
+        ├── defaults
+        │   └── main.yml
+        └── tasks
+            └── main.yml
+```
+The file "playbook.yml" should then contain a list of which roles should be applied to which host (in this case we have localhost and all but you could group servers)
+each role called will then run the tasks/main.yml file.
+
+
+In this play you will notice I have parameterized the state of all resources, this is to make it possible to tear down the infrastructure by overwriting the state on the command line.
+
+I think I found a bug with ansible where ordering seems to need to change based on whether you are creating or destroying. The network infra needs to exist before the container is started but also needs to be removed after the container is removed. As a result my tasks/main.yml changes the order based on whether we are creating or destroying. This is not normal for ansible, however I could not find any examples of this working. Also at the time of writing the keep_volumes has an open bug that the volumes survive the removal of the container. As a result I have just added it as a separate section to remove after container is removed.
+
+
 # kubernetes?   
   
   
