@@ -2,7 +2,25 @@
 There are readmes in most directories, these are to help with startup commands and should be referenced if you ever want more information on the specifics of the infrastructure.  
 For a local deploy I use docker compose and for a deploy to the google cloud platform I use ansible. This was mainly just to see how both worked but also to demonstrate the difference between the 2.  
 Compose is a single file for a docker stack. It works with both local deployments and deployments to.   
+The table of contents came from [here](https://github.com/ekalinin/github-markdown-toc) thanks to 
+ekalinin. 
   
+# Contents
+   * [CI_Pipeline](#ci_pipeline)
+   * [Usage Local deploy](#usage-local-deploy)
+   * [Docker](#docker)
+   * [Layers](#layers)
+   * [Lightweight](#lightweight)
+   * [The entrypoint](#the-entrypoint)
+   * [Restart policy](#restart-policy)
+   * [Compose](#compose)
+   * [Jenkins](#jenkins)
+   * [Jenkins Job Types](#jenkins-job-types)
+   * [Jenkins Job Builder](#jenkins-job-builder)
+   * [App specific components](#app-specific-components)
+   * [Ansible](#ansible)
+   * [kubernetes?](#kubernetes)
+
 # Usage Local deploy  
 Create the secrets file by running the following from the root of the repo.  
 Replace value with the user/password you want to use  
