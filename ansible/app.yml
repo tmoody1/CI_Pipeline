@@ -1,0 +1,11 @@
+---
+
+- hosts: all
+  become: yes
+  roles:
+    - app
+  region: 'us-west1'
+  project: "trainer-tracker"
+  auth_kind: "serviceaccount"
+  service_account_file: "/home/tmoody/google/key/key.json"
+  scopes: "www.googleapis.com/auth/compute"
