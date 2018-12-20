@@ -1,27 +1,24 @@
 ---
+## I use item in several places, hence need to set loop_control
 
-- include_tasks: networks.yml
+- include_tasks: "{{ task_list }}"
   when: state == "present"
   vars:
     container_state: started
-- include_tasks: volumes.yml
-  when: state == "present"
-  vars:
-    container_state: started
-- include_tasks: containers.yml
-  when: state == "present"
-  vars:
-    container_state: started
+  with_items:
+    - networks.yml
+    - volumes.yml
+    - containers.yml
+  loop_control:
+    loop_var: task_list
 
-- include_tasks: containers.yml
+- include_tasks: "{{ task_list }}"
   when: state == "absent"
   vars:
     container_state: absent
-- include_tasks: volumes.yml
-  when: state == "absent"
-  vars:
-    container_state: absent
-- include_tasks: networks.yml
-  when: state == "absent"
-  vars:
-    container_state: absent
+  with_items:
+    - containers.yml
+    - volumes.yml
+    - networks.yml
+  loop_control:
+    loop_var: task_list

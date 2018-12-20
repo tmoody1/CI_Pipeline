@@ -18,4 +18,11 @@ node('master'){
             sh 'docker-compose up -d'
         }
     }
+    stage('Test deployment was successful'){
+        retry(6){
+            sleep(10)
+            sh 'nc -z 127.0.0.1 9090'
+        }
+
+    }
 }

@@ -6,7 +6,7 @@ USER root
 COPY secrets.txt /tmp
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y maven python-pip && \
+    apt-get install -y maven python-pip netcat && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
     pip install jenkins-job-builder
