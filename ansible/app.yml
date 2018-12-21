@@ -11,3 +11,4 @@
     service_account_file: "/home/tmoody/google/key/key.json"
     scopes:
       - "https://www.googleapis.com/auth/compute"
+      - "https://www.googleapis.com/auth/cloud-platform"

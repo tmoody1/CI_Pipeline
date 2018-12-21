@@ -1,2 +1,3 @@
 *.retry
 roles/infra/files/secrets.txt
+roles/app/defaults/main.yml

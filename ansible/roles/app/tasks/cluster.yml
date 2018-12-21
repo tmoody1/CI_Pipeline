@@ -1,0 +1,19 @@
+---
+
+- name: create a cluster
+  gcp_container_cluster:
+      name: "infra"
+      initial_node_count: 3
+      master_auth:
+        username: cluster_admin
+        password: T35TPa55w0rd!1234
+      node_config:
+        machine_type: f1-micro
+        disk_size_gb: 10
+      state: absent
+      zone: us-west1-a
+      project: "{{ gcp_project }}"
+      auth_kind: "{{ auth_kind }}"
+      service_account_file: "{{ service_account_file }}"
+      scopes: "{{ scopes }}"
+  register: cluster

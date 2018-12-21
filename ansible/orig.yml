@@ -9,7 +9,6 @@
     auth_kind: serviceaccount
     scopes:
       - https://www.googleapis.com/auth/compute
-    
 
   tasks:
 
@@ -18,4 +17,7 @@
          state: absent
          name: 'test-address1'
          region: 'us-west1'
-         project: "{{ project}}"
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"

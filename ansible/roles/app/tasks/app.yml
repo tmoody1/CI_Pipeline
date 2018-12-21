@@ -1,0 +1,6 @@
+---
+
+- name: deploy app
+  k8s:
+    password: "{{ password }}"
+    

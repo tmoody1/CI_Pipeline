@@ -1,0 +1,13 @@
+---
+- name: create a node pool
+  gcp_container_node_pool:
+      name: "app_node"
+      initial_node_count: 1
+      cluster: "{{ cluster }}"
+      state: absent
+      zone: us-west1-a
+      project: "{{ gcp_project }}"
+      auth_kind: "{{ auth_kind }}"
+      service_account_file: "{{ service_account_file }}"
+      scopes: "{{ scopes }}"
+

@@ -4,9 +4,12 @@ MAINTAINER Thomas Moody
 # Install software
 USER root
 COPY secrets.txt /tmp
-RUN apt-get update -y && \
+ENV CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+RUN  echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list  && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -  && \
+    apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y maven python-pip netcat && \
+    apt-get install -y maven python-pip netcat google-cloud-sdk && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
     pip install jenkins-job-builder

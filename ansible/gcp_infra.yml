@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - gcp_infra
+  vars:
+    service_account_file: /home/tmoody/google/key/key.json
+    project: gleaming-store-226116
+    auth_kind: serviceaccount
+    scopes:
+      - https://www.googleapis.com/auth/compute
+      - https://www.googleapis.com/auth/devstorage.full_control

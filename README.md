@@ -96,6 +96,8 @@ Click the hyperlink in the error message and enable the API
 Then run test.yml again.
 If it works change state: present to state: absent and run again. If it has not worked just keep debugging until it does.Check that you have the followed all the steps above.
 
+A list of scopes is availiable [here](https://developers.google.com/identity/protocols/googlescopes)
+
 
 # Docker  
 This is aimed at people who have limited exposure to docker, it aims to explain the concept behind some of the docker ideas.    

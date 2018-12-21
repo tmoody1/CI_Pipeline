@@ -24,5 +24,9 @@ node('master'){
             sh 'nc -z 127.0.0.1 9090'
         }
 
-    }
+    }/*
+    stage('push image'){
+        gcloud auth configure-docker
+        docker push gcr.io/${PROJECT_ID}/hello-app:v1
+    }*/
 }

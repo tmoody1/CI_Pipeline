@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-ci
+  labels:
+    app: jenkins-ci
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-ci
+  template:
+    metadata:
+      labels:
+        app: jenkins-ci
+    spec:
+      containers:
+      - name: jenkins-ci
+        image: gcr.io/gleaming-store-226116/jenkins-ci
+        ports:
+        - containerPort: 8080
+        env:
+        - name: JAVA_OPTS
+          value: "-Djenkins.install.runSetupWizard=false"
+        - name: user
+          value: "admin"
+        - name: password
+          value: "admin"
