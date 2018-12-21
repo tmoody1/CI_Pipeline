@@ -53,6 +53,50 @@ to destroy run
 ```
 ansible-playbook "/home/tmoody/project/CI_Pipeline/ansible/infra.yml" -i ansible/inv/hosts.ini --extra-vars "state=absent"
 ```
+
+# Usage Ansible GCP deploy
+From [here](https://docs.ansible.com/ansible/latest/scenario_guides/guide_gce.html)
+```
+pip install requests google-auth
+```
+Create the service account. If you have not already got a google cloud account just sign up. You get $300 free usage and they say they will inform you before they charge you real money.
+Create the service account using the [link](https://console.developers.google.com/iam-admin/serviceaccounts)
+Click create service account
+Give it a name and a description
+If you look at the ID it will have an @"account ID".iam.gserviceaccount.com, copy the account ID somewhere safe, we will need it later
+Select Compute Engine -> Compute Admin (this is a test instance)
+Click continue
+Don't add any users to the account but make sure to create a key.
+Save that key securely. This is how we will connect to the account
+
+open ansible/app.yml and test.yml
+change service account file and gcp_project to your project and you service account key file.
+There seems to be an issue with the documentation. According to ansible and GCP the scope should not contain https:// however I found the code did not work with out it.
+Also when using the google platform I noticed it often came with the error "resource temporalily unavailiable click here to reload"
+If that message comes up just reload, tends to fix itself.
+```
+- hosts: all
+  become: yes
+  roles:
+    - app
+  vars:
+    region: 'us-west1'
+    gcp_project: "gleaming-store-226116"
+    auth_kind: "serviceaccount"
+    service_account_file: "/home/tmoody/google/key/key.json"
+    scopes:
+      - "https://www.googleapis.com/auth/compute"
+```
+I have included a test.yml file, this creates just an IP address which is a free product. Run test.yml with
+```
+ansible-playbook -i inv/hosts.ini test.yml
+```
+This should error out with "Access Not Configured. Compute Engine API has not been used in project 747355212659 before or it is disabled."
+Click the hyperlink in the error message and enable the API
+Then run test.yml again.
+If it works change state: present to state: absent and run again. If it has not worked just keep debugging until it does.Check that you have the followed all the steps above.
+
+
 # Docker  
 This is aimed at people who have limited exposure to docker, it aims to explain the concept behind some of the docker ideas.    
 If you have no experience of docker I reccomend https://docs.docker.com/get-started/#recap-and-cheat-sheet    
