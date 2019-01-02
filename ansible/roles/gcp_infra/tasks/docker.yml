@@ -1,0 +1,84 @@
+---
+- name: install dependancies
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  delegate_to: "{{ address.address }}"
+  with_items: 
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+    - python-pip
+
+- name: get key
+  get_url:
+    dest: /tmp/key
+    url: https://download.docker.com/linux/ubuntu/gpg
+    mode: 0640
+  delegate_to: "{{ address.address }}"
+
+- name: add repo
+  command: "sudo apt-key add /tmp/key"
+  delegate_to: "{{ address.address }}"
+
+- name: update repos
+  command: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable"
+  delegate_to: "{{ address.address }}"
+
+- name: install docker
+  apt:
+    name: docker-ce
+    update_cache: yes
+  delegate_to: "{{ address.address }}"
+
+- name: install dockerpy
+  pip:
+    name: docker
+  delegate_to: "{{ address.address }}"
+
+- name: create our own registry
+  docker_container:
+    name: registry
+    image: registry:2
+    published_ports:
+      - 5000:5000
+    state: present
+  delegate_to: "{{ address.address }}"
+
+
+- name: copy image
+  copy: 
+    src: jenkins.tar.gz
+    dest: /tmp/jenkins.tar.gz
+    mode: 0644
+    group: root
+    owner: root
+  delegate_to: "{{ address.address }}"
+
+- name: load the image
+  docker_image:
+    name: localhost:5000/jenkins-ci
+    tag: latest
+    load_path: /tmp/jenkins.tar.gz
+    state: present
+  delegate_to: "{{ address.address }}"
+
+
+#- name: import the image
+#  command: docker load -i /tmp/jenkins.tar.gz
+#  delegate_to: "{{ address.address }}"
+- name: filthy hack
+  copy:
+    dest: /tmp/script.sh
+    content: "docker tag $(docker images | grep none | awk  '{print$3}') jenkins-ci"
+    mode: 0750
+    group: root
+    owner: root
+    state: present
+
+- name: filthy hack
+  command: "sh  /tmp/script.sh"
+#- name: name the image
+#  command: "docker tag $(docker images | grep none | awk  '{print$3}') jenkins-ci"
+#  delegate_to: "{{ address.address }}"

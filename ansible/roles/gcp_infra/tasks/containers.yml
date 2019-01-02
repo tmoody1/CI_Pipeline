@@ -7,11 +7,13 @@
     owner: root
     group: root
     mode: 0600
+  delegate_to: "{{ address.address }}"
+
 
 - name: jenkins
   docker_container:
     name: jenkins-ci
-    image: jenkins-ci
+    image: localhost:5000/jenkins-ci
     published_ports:
       - 8080:8080
       - 50000:50000
@@ -25,6 +27,8 @@
       - name: infra
     state: "{{ container_state }}"
     keep_volumes: no  # is ignored, leaving as would be better if this worked
+  delegate_to: "{{ address.address }}"
+
 
 - name: sonarqube
   docker_container:
@@ -38,3 +42,4 @@
       - name: infra
     state: "{{ container_state }}"
     keep_volumes: no
+  delegate_to: "{{ address.address }}"

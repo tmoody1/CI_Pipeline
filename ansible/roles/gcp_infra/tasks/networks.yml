@@ -1,0 +1,7 @@
+---
+
+- name: configure network
+  docker_network:
+    name: infra
+    state: "{{ state }}"
+  delegate_to: "{{ address.address }}"
