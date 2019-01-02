@@ -8,6 +8,8 @@ ekalinin.
 # Contents
    * [CI_Pipeline](#ci_pipeline)
    * [Usage Local deploy](#usage-local-deploy)
+   * [Usage Ansible deploy](#sage-ansible-deploy)
+   * [Usage Ansible GCP deploy](#usage-ansible-gcp-deploy)
    * [Docker](#docker)
    * [Layers](#layers)
    * [Lightweight](#lightweight)
@@ -19,7 +21,6 @@ ekalinin.
    * [Jenkins Job Builder](#jenkins-job-builder)
    * [App specific components](#app-specific-components)
    * [Ansible](#ansible)
-   * [kubernetes?](#kubernetes)
 
 # Usage Local deploy  
 Create the secrets file by running the following from the root of the repo.  
@@ -98,6 +99,12 @@ If it works change state: present to state: absent and run again. If it has not 
 
 A list of scopes is availiable [here](https://developers.google.com/identity/protocols/googlescopes)
 
+Once this is done build the docker images using the instructions from local deploy and save it to the files directory in ```ansible/roles/gcp_infra/files/jenkins.tar.gz```
+
+``` 
+docker images # Search for jenkins-ci
+docker save -o ansible/roles/gcp_infra/files/jenkins.tar.gz <image ID>
+```
 
 # Docker  
 This is aimed at people who have limited exposure to docker, it aims to explain the concept behind some of the docker ideas.    
@@ -314,8 +321,3 @@ each role called will then run the tasks/main.yml file.
 In this play you will notice I have parameterized the state of all resources, this is to make it possible to tear down the infrastructure by overwriting the state on the command line.
 
 I think I found a bug with ansible where ordering seems to need to change based on whether you are creating or destroying. The network infra needs to exist before the container is started but also needs to be removed after the container is removed. As a result my tasks/main.yml changes the order based on whether we are creating or destroying. This is not normal for ansible, however I could not find any examples of this working. Also at the time of writing the keep_volumes has an open bug that the volumes survive the removal of the container. As a result I have just added it as a separate section to remove after container is removed.
-
-
-# kubernetes?   
-  
-  

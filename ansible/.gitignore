@@ -1,3 +1,4 @@
 *.retry
 roles/infra/files/secrets.txt
 roles/app/defaults/main.yml
+roles/gcp_infra/files/jenkins.tar.gz
