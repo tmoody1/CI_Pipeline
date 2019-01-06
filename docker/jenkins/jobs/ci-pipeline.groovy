@@ -2,6 +2,11 @@ node('master'){
     stage('pull code'){
         git 'https://github.com/scrappy1987/tracker-docker.git'
     }
+    stage('debug'){
+        sh "whoami"
+        sh "id"
+        sh "docker ps"
+    }
     stage('build project'){
         sh 'mvn clean package docker:build'
     }
