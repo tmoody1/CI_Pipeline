@@ -65,9 +65,10 @@
   delegate_to: "{{ address.address }}"
 
 
-#- name: import the image
-#  command: docker load -i /tmp/jenkins.tar.gz
-#  delegate_to: "{{ address.address }}"
+- name: import the image
+  command: docker load -i /tmp/jenkins.tar.gz
+  delegate_to: "{{ address.address }}"
+
 - name: filthy hack
   copy:
     dest: /tmp/script.sh
@@ -75,10 +76,8 @@
     mode: 0750
     group: root
     owner: root
-    state: present
+  delegate_to: "{{ address.address }}"
 
 - name: filthy hack
   command: "sh  /tmp/script.sh"
-#- name: name the image
-#  command: "docker tag $(docker images | grep none | awk  '{print$3}') jenkins-ci"
-#  delegate_to: "{{ address.address }}"
+  delegate_to: "{{ address.address }}"

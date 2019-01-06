@@ -13,7 +13,7 @@
 - name: jenkins
   docker_container:
     name: jenkins-ci
-    image: localhost:5000/jenkins-ci
+    image: jenkins-ci
     published_ports:
       - 8080:8080
       - 50000:50000
