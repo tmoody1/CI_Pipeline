@@ -5,11 +5,9 @@ MAINTAINER Thomas Moody
 USER root
 COPY secrets.txt /tmp
 ENV CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
-RUN  echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list  && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -  && \
-    apt-get update -y && \
+RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y maven python-pip netcat google-cloud-sdk && \
+    apt-get install -y maven python-pip netcat && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
     pip install jenkins-job-builder
@@ -19,7 +17,7 @@ RUN chown jenkins: /tmp/secrets.txt && \
     curl -o /tmp/docker.tar.gz https://download.docker.com/linux/static/stable/x86_64/docker-18.09.0.tgz && \
     tar -C /tmp -xzf /tmp/docker.tar.gz && \
     mv /tmp/docker/* /usr/bin && \
-    groupadd docker && \
+    groupadd -g 999 docker && \
     usermod -aG docker jenkins && \
     curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose

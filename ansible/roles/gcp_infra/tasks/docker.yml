@@ -37,15 +37,21 @@
     name: docker
   delegate_to: "{{ address.address }}"
 
-- name: create our own registry
-  docker_container:
-    name: registry
-    image: registry:2
-    published_ports:
-      - 5000:5000
-    state: present
-  delegate_to: "{{ address.address }}"
+#- name: create our own registry
+#  docker_container:
+#    name: registry
+#    image: registry:2
+#    published_ports:
+#      - 5000:5000
+#    state: started
+#  delegate_to: "{{ address.address }}"
 
+- name: create the docker group
+  group:
+    name: docker
+    gid: 999
+    state: present
+    system: yes
 
 - name: copy image
   copy: 

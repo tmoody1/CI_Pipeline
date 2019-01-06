@@ -3,7 +3,7 @@
       name: "disk-instance"
       size_gb: 10
       source_image: projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts
-      zone: us-west1-a
+      zone: europe-west2-a
       project: "{{ project }}"
       auth_kind: "{{ auth_kind }}"
       service_account_file: "{{ service_account_file }}"
@@ -25,7 +25,7 @@
 - name: create a address
   gcp_compute_address:
       name: "infra-address"
-      region: us-west1
+      region: europe-west2
       project: "{{ project }}"
       auth_kind: "{{ auth_kind }}"
       service_account_file: "{{ service_account_file }}"
@@ -106,7 +106,7 @@
 - name: create a instance
   gcp_compute_instance:
     name: "infra"
-    machine_type: f1-micro
+    machine_type: n1-standard-2
     disks:
     - auto_delete: true
       boot: true
@@ -117,7 +117,7 @@
       - name: External NAT
         nat_ip: "{{ address }}"
         type: ONE_TO_ONE_NAT
-    zone: us-west1-a
+    zone: europe-west2-a
     project: "{{ project }}"
     auth_kind: "{{ auth_kind }}"
     service_account_file: "{{ service_account_file }}"
